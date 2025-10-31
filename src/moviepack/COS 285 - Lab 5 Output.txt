@@ -1,0 +1,42 @@
+9391 milliseconds to create search engine
+Results for query "harry potter"
+1: welcome back, potter 	a 3-part miniseries about an alternate harry potter timeline.
+2: harry fox and his six american beauties 	harry fox performs his vaudeville act.
+3: daniel radcliffe: being harry potter 	bbc docuemntary about daniel radcliffe and his role as the main character in harry potter
+4: beatrix: the early life of beatrix potter 	a biographical film about beatrix potter as a young woman.
+5: no neck joe in: ultimate death match 	when headlock harry vs. no neck joe.
+Time for search: 482 ms
+
+Results for query "small town in maine"
+1: barstow, california 	documentary about a small town in california.
+2: postadresse: 2640 schl glm hl 	documentary about a small town in austria.
+3: his nibs 	shenanigans at a small town movie theater.
+4: invaders from venus! 	a small texas town battles intergalactic invaders.
+5: folk tales - a grockumentary 	behind the scenes of small town folk
+Time for search: 745 ms
+
+Results for query "world war"
+1: the volunteer 	world war ii propaganda film.
+2: greek testament 	british war documentary
+3: dondi 	world war ii gis adopt an italian war orphan.
+4: donald's decision 	donald duck buys canadian war bonds in world war ii.
+5: w.s.s. thriftettes 	a world war i promotional cartoon for war savings stamps.
+Time for search: 462 ms
+
+Results for query "john mcclanes"
+1: how much is that window in the doggie? 	a john callahan cartoon
+2: any, many, and man 	a john korty cartoon
+3: citizen locke 	story of john locke...
+4: the comic book greats: the romitas 	stan lee interviews john romita and john romita jr.
+5: the razzle dazzle 	short film by john hyams.
+Time for search: 441 ms
+
+Results for query "bruce wayne"
+1: if i had a talking picture of you 	bruce lacey performance
+2: the lees: action speaks louder 	bruce lee famous families documentary
+3: friday night idiot box 	short animation by bruce wilson
+4: australian history 	short directed by bruce petty.
+5: dogg in gotham city 	dogg helps out wayne bail bonds.
+Time for search: 502 ms
+
+BUILD SUCCESSFUL (total time: 12 seconds)
