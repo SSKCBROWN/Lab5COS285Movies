@@ -14,9 +14,9 @@ public class Lab5 {
      */
     public static void main(String[] args) throws IOException {
         
-        //String tsv = args[0];
+        String tsv = args[0];
         ///Users/abigailpitcairn/eclipse-workspace/COS285TA_Grading
-        String tsv = "C:\\Users\\missy\\Documents\\New folder\\Lab5COS285Movies\\src\\moviepack\\imdb_movies.tsv";
+        //String tsv = "C:\\Users\\missy\\Documents\\New folder\\Lab5COS285Movies\\src\\moviepack\\imdb_movies.tsv";
         ArrayList<Movie> movies = Movie.readMoviesFromFile(tsv);
         
         //Time the creation of the search engine
