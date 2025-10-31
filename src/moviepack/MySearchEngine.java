@@ -1,17 +1,19 @@
 package moviepack;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
- * This class implements a simple search engine for Movie objects.
- * @author Christopher Brown
- * @version October 28, 2025
+ * Gotta add some javadoc and remove some comments
+ * @author Nicolas Borelli
  */
 public class MySearchEngine {
+
     private final ArrayList<Movie> movies;
     private final TreeMap<Movie, TreeMap<String, Double>> tf;
     private final TreeMap<String, Double> idf;
-    private boolean built = false;
 
     /**
      * Constructor for MySearchEngine
@@ -19,124 +21,96 @@ public class MySearchEngine {
      */
     public MySearchEngine(ArrayList<Movie> movies) {
         this.movies = movies;
-        this.tf = new TreeMap<>();
-        this.idf = new TreeMap<>();
-        build();
-    }
-    
-    private void build() {
-        if (built) return;
+        tf = new TreeMap();
+        idf = new TreeMap();
         calculateTF();
         calculateIDF();
-        built = true;
     }
 
-
     private void calculateTF() {
+
+        // Iterate on each movie
         for (Movie m : movies) {
-            String overview = m.getOverview();
+            // get the movie overview
+            String[] overview = m.getOverview().split(" ");
+            double totalWords = overview.length;
             TreeMap<String, Double> innerMap = new TreeMap<>();
-            if (overview == null || overview.isEmpty()) {
-                tf.put(m, innerMap);
-                continue;
-            }
-
-            String[] words = overview.toLowerCase().split("\\W+");
-            TreeMap<String, Integer> counts = new TreeMap<>();
-            int totalWords = 0;
-            for (String word : words) {
-                if (word.isEmpty()) {
-                    continue;
+            // Write the code to fill this TreeMap
+            for (String word : overview) {
+                double count = 0.0;
+                for (String wordCheck : overview) {
+                    if (word.equals(wordCheck)) {
+                        count++;
+                    }
                 }
-                Integer existing = counts.get(word);
-                if (existing == null) {
-                    counts.put(word, 1);
-                } else {
-                    counts.put(word, existing + 1);
-                }
-                totalWords++;
+                innerMap.put(word, count / totalWords);
             }
-
-            if (totalWords == 0) {
-                tf.put(m, innerMap);
-                continue;
-            }
-
-            double total = (double) totalWords;
-            for (String term : counts.keySet()) {
-                innerMap.put(term, counts.get(term) / total);
-            }
-
+            // add this TreeMap to tf
             tf.put(m, innerMap);
         }
     }
 
     private void calculateIDF() {
-        double totalMovies = this.movies.size();
-        if (totalMovies == 0) {
-            return;
-        }
-
-        TreeMap<String, Integer> documentCounts = new TreeMap<>();
+        double N = movies.size();
+        // iterate on all songs
         for (Movie m : movies) {
-            TreeMap<String, Double> terms = tf.get(m);
-            if (terms == null) {
-                continue;
-            }
-            for (String term : terms.keySet()) {
-                Integer existing = documentCounts.get(term);
-                if (existing == null) {
-                    documentCounts.put(term, 1);
-                } else {
-                    documentCounts.put(term, existing + 1);
-                }
+            // get all words
+            String[] terms = m.getOverview().split(" ");
+            // get all unique words
+            TreeSet<String> uniqueWords = new TreeSet<>(Arrays.asList(terms));
+            for (String word : uniqueWords) {
+                idf.put(word, idf.getOrDefault(word, 0.0) + 1);
             }
         }
-//Math.log((totalMovies + 1.0) / (documentCounts.get(term) + 1.0));
-        for (String term : documentCounts.keySet()) {
-            double idfValue = Math.log((totalMovies + 1.0) / (documentCounts.get(term) + 1.0));
-            idf.put(term, idfValue);
+        // idf only has nx values so far; by this code we will update the values
+        for (String m : idf.keySet()) {
+            double nx = idf.get(m);
+            double idfValue = (N - nx + 0.5) / (nx + 0.5);
+            idfValue = Math.log(idfValue + 1);
+            idf.put(m, idfValue);
         }
     }
 
-    private double relevanceScore(String query, Movie m) {
-        String[] queryTerms = query.toLowerCase().split("\\W+");
+    private double relevance(String query, Movie m) {
+        String[] queryTerms = query.split(" ");
         double score = 0.0;
-        for (String term : queryTerms) {
-            Double tfValue = tf.get(m).get(term);
-            Double idfValue = idf.get(term);
-            if (tfValue != null && idfValue != null) {
-                score += tfValue * idfValue;
+        for (String queryTerm : queryTerms) {
+            if (idf.containsKey(queryTerm) && tf.get(m).containsKey(queryTerm)) {
+                score += idf.get(queryTerm) * tf.get(m).get(queryTerm);
             }
         }
         return score;
     }
 
+    /**
+     * Searches for movies that are most relevant to the given query string.
+     * Uses TF-IDF scores to rank movies by relevance and prints the top 5.
+     *
+     * @param query the search string (e.g., "world war" or "harry potter")
+     */
     public void search(String query) {
-        TreeMap<Double, ArrayList<Movie>> scoredMovies = new TreeMap<>();
+        // Store movie / relevance score pairs
+        TreeMap<Double, ArrayList<Movie>> rankedResults = new TreeMap<>();
+
         for (Movie m : movies) {
-            double score = relevanceScore(query, m);
-            scoredMovies.putIfAbsent(score, new ArrayList<>());
-            scoredMovies.get(score).add(m);
+            double score = relevance(query, m);
+            rankedResults.putIfAbsent(score, new ArrayList<>());
+            rankedResults.get(score).add(m);
         }
-        System.out.println("Search results for query: \"" + query + "\"");
+
+        System.out.println("Results for query \"" + query + "\"");
         int rank = 1;
-        outer:
-        for (Double score : scoredMovies.descendingKeySet()) {
-            ArrayList<Movie> movieList = scoredMovies.get(score);
-            for (Movie m : movieList) {
-                System.out.println(rank + ". " + m.getTitle() + " (score: " + score + ")");
-                System.out.println("   Overview: " + m.getOverview());
+        // Iterate over scores from highest to lowest
+        for (Double score : rankedResults.descendingKeySet()) {
+            for (Movie m : rankedResults.get(score)) {
+                System.out.printf("%d: %s \t%s\n", rank, m.getTitle(), m.getOverview());
                 rank++;
                 if (rank > 5) {
-                    break outer;
+                    //System.out.println();
+                    return; // stop after top 5
                 }
             }
         }
-        if (rank == 1) {
-            System.out.println("No results found.");
-        }
+        System.out.println();
     }
-
-    
 }
