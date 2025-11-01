@@ -1,18 +1,2 @@
-## Getting Started
-
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
-
-## Folder Structure
-
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+  Search result quality for this search engine was not ideal. Many queries referenced only one word instead of putting more weight on the combination of the words in the query. For example, Bruce Wayne search brought more up about Bruce Lee than Batman or Gotham City did. This could be due to the primitive design and model of the search engine, where it takes only the TF and IDF scores into account and no other weighing factors.
+  If we were to do this project again, we would like to see some weighing done with the combination of words in the query rather than single word dominance. Additionally, some searches did not show up any relevant results at all. When searching for small town in maine, nothing about maine popped up, because all of the results were about "smmall town in". I hope this to be changed in future models.
