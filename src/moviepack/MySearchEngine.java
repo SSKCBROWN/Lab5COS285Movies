@@ -14,7 +14,7 @@ public class MySearchEngine {
     private boolean built = false;
 
     /**
-     * Constructor for MySearchEngine
+     * Constructor method for MySearchEngine, creating the search engine.
      * @param movies - the list of movies to parse
      */
     public MySearchEngine(ArrayList<Movie> movies) {
@@ -23,7 +23,8 @@ public class MySearchEngine {
         this.idf = new TreeMap<>();
         build();
     }
-    
+
+    /** */
     private void build() {
         if (built) return;
         calculateTF();
@@ -31,17 +32,18 @@ public class MySearchEngine {
         built = true;
     }
 
-
+    /** */
     private void calculateTF() {
         for (Movie m : movies) {
             String overview = m.getOverview();
+            String title = m.getTitle();
             TreeMap<String, Double> innerMap = new TreeMap<>();
             if (overview == null || overview.isEmpty()) {
                 tf.put(m, innerMap);
                 continue;
             }
 
-            String[] words = overview.toLowerCase().split("\\W+");
+            String[] words = (title + " " + overview).toLowerCase().split("\\W+");
             TreeMap<String, Integer> counts = new TreeMap<>();
             int totalWords = 0;
             for (String word : words) {
@@ -70,7 +72,33 @@ public class MySearchEngine {
             tf.put(m, innerMap);
         }
     }
-
+    /*
+     * private void calculateIDF() {
+     * int total_movies = this.movies.size();
+     * TreeMap<String, Integer> term_counts = new TreeMap<>();
+     * for (Movie m : movies) {
+     * String overview = m.getOverview();
+     * String title = m.getTitle();
+     * String allWords = overview + title;
+     * String[] terms = allWords.split("\\s+");
+     * TreeSet<String> unique_terms = new TreeSet<>();
+     * for (String term : terms) {
+     * term = term.trim();
+     * if (!term.isEmpty()) continue;
+     * unique_terms.add(term);
+     * }
+     * for (String unique_term : unique_terms) {
+     * term_counts.put(unique_term, term_counts.getOrDefault(unique_term, 0) + 1);
+     * }
+     * }
+     * for (Map.Entry<String, Integer> e : term_counts.entrySet()) {
+     * double term_count = e.getValue();
+     * double value = term_count / total_movies;
+     * idf.put(e.getKey(), value);
+     * }
+     * }
+     */
+    /** */
     private void calculateIDF() {
         double totalMovies = this.movies.size();
         if (totalMovies == 0) {
